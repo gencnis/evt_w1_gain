@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Raw datasets
+03_experiments/data/*
+!03_experiments/data/.gitkeep
+
+# Academic source PDFs
+00_guidelines/*.pdf
+01_sources/*.pdf
+
+# Final report binaries
+05_report/*.docx
+05_report/*.pdf
+
+# Video files
+06_video/*
+!06_video/.gitkeep
+
+# Temporary files
+*.tmp
+*.log
+~$*
