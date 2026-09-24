@@ -1,0 +1,10 @@
+RESULT seed=0 iterations=10000 rmse=0.0525421065455399 runtime=16.3965
+RESULT seed=1 iterations=10000 rmse=0.053984346533119426 runtime=16.4548
+RESULT seed=2 iterations=10000 rmse=0.05262813928940595 runtime=17.1650
+RESULT seed=3 iterations=10000 rmse=0.05206333899079421 runtime=19.6194
+RESULT seed=4 iterations=10000 rmse=nan runtime=24.4191
+RESULT seed=5 iterations=10000 rmse=0.053347714381476674 runtime=22.2237
+RESULT seed=6 iterations=10000 rmse=0.05300711145075303 runtime=15.4666
+RESULT seed=7 iterations=10000 rmse=0.051159866935730026 runtime=17.8112
+RESULT seed=8 iterations=10000 rmse=nan runtime=18.7294
+RESULT seed=9 iterations=10000 rmse=0.053644063473470054 runtime=19.1657

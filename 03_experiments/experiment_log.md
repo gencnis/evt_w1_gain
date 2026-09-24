@@ -379,3 +379,77 @@ has not yet been isolated.
 
 This experiment also demonstrates why uncontrolled random seeds make direct
 iteration-count comparisons unreliable.
+
+---
+
+## E12 - Official GAIN 10-Seed Reproduction
+
+Official repository commit:
+
+`ed53e6d0be14a8d4ce35eff46449d4047bcb483e`
+
+Environment:
+
+- Python 3.10
+- TensorFlow CPU 2.15.1
+- NumPy 1.26.4
+- oneDNN disabled
+- Seeds: 0-9
+
+Official configuration:
+
+- Dataset: authors' bundled Spam dataset
+- Missing rate: 20%
+- Batch size: 128
+- Hint rate: 0.9
+- Alpha: 100
+- Iterations: 10000
+
+### Results
+
+| Seed | RMSE | Runtime (s) |
+|---:|---:|---:|
+| 0 | 0.052542 | 16.40 |
+| 1 | 0.053984 | 16.45 |
+| 2 | 0.052628 | 17.16 |
+| 3 | 0.052063 | 19.62 |
+| 4 | NaN | 24.42 |
+| 5 | 0.053348 | 22.22 |
+| 6 | 0.053007 | 15.47 |
+| 7 | 0.051160 | 17.81 |
+| 8 | NaN | 18.73 |
+| 9 | 0.053644 | 19.17 |
+
+### Summary
+
+- Finite runs: 8/10
+- NaN runs: 2/10
+- Finite-run mean RMSE: 0.052797
+- Finite-run sample standard deviation: 0.000909
+- Minimum finite RMSE: 0.051160
+- Maximum finite RMSE: 0.053984
+- Mean runtime: 18.75 s
+
+Finite successful runs therefore produced:
+
+`0.0528 ± 0.0009`
+
+The original GAIN paper reports:
+
+`0.0513 ± 0.0016`
+
+### Interpretation
+
+Successful runs of the authors' official implementation produced RMSE values
+close to the numerical range reported in the original paper.
+
+However, two of the ten controlled seed runs produced NaN. Those failed runs
+are excluded from the finite-run mean and standard deviation.
+
+Therefore, this experiment should not be described as an exact reproduction
+of the paper's reported mean and standard deviation.
+
+Instead, the experiment shows that the official implementation can reproduce
+similar Spam imputation accuracy in successful runs while also exhibiting
+run failures for some seeds in the tested modern TensorFlow compatibility
+environment.

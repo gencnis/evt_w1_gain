@@ -234,3 +234,48 @@ Every experimental run should record:
 - runtime
 - warnings or failures
 - interpretation
+
+## Official 10-Seed Reproduction
+
+The authors' official GAIN implementation was evaluated using 10 fixed random
+seeds at 10000 training iterations.
+
+Configuration:
+
+- Official repository commit:
+  `ed53e6d0be14a8d4ce35eff46449d4047bcb483e`
+- Dataset: authors' bundled Spam dataset
+- Missing rate: 20%
+- Batch size: 128
+- Hint rate: 0.9
+- Alpha: 100
+- Iterations: 10000
+- Seeds: 0-9
+
+Results:
+
+- Finite runs: 8/10
+- NaN runs: 2/10
+- Finite mean RMSE: 0.052797
+- Finite sample standard deviation: 0.000909
+- Minimum finite RMSE: 0.051160
+- Maximum finite RMSE: 0.053984
+
+Finite successful runs therefore produced:
+
+`0.0528 ± 0.0009`
+
+The original GAIN paper reports Spam RMSE of:
+
+`0.0513 ± 0.0016`
+
+The successful official-code runs are numerically close to the reported paper
+result, but the two NaN runs prevent treating the experiment as an exact
+reproduction of the complete reported result.
+
+Related files:
+
+- `results/official_10seed_raw.txt`
+- `results/official_10seed_results.csv`
+- `results/official_10seed_summary.md`
+- `../04_figures_tables/official_10seed_reproduction.png`

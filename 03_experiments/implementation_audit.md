@@ -103,3 +103,20 @@ procedure.
   https://github.com/jsyoon0823/GAIN
 - Discussion of the hint-mechanism discrepancy:
   https://github.com/jsyoon0823/GAIN/issues/2
+
+## Multi-Seed Official-Code Reproduction
+
+The authors' official implementation was evaluated at 10000 iterations using
+seeds 0 through 9.
+
+- Finite runs: 8/10
+- NaN runs: 2/10
+- Finite mean RMSE: 0.052797
+- Finite sample standard deviation: 0.000909
+- Best finite RMSE: 0.051160
+
+The original paper reports Spam RMSE of approximately 0.0513 ± 0.0016.
+
+Successful official-code runs therefore approach the reported numerical range,
+but the NaN outcomes prevent treating this experiment as an exact reproduction
+of the paper's full reported result.

@@ -101,3 +101,32 @@ raporlanmıştır. Seed=42 ile resmi implementasyonda 10.000 iterasyonda elde
 edilen 0.0533 RMSE bu değerden daha yüksek olmakla birlikte, tek bir seed
 sonucu olduğundan makaledeki çoklu deney ortalamasıyla doğrudan eşdeğer
 olarak yorumlanmamıştır.
+
+### Çoklu Tohum ile Resmi Kodun Yeniden Üretimi
+
+Tek bir rastgele tohumdan elde edilen sonucun genellenebilirliğini
+değerlendirmek amacıyla yazarların resmi GAIN implementasyonu 0-9 arasındaki
+10 farklı seed ile çalıştırılmıştır. Her koşuda Spam veri seti, %20 eksiklik
+oranı, 128 mini-batch büyüklüğü, 0.9 hint oranı, 100 alpha değeri ve 10.000
+eğitim iterasyonu kullanılmıştır.
+
+On koşunun sekizinde sonlu RMSE elde edilirken seed 4 ve seed 8 koşuları NaN
+ile sonuçlanmıştır. Sonlu sekiz koşunun ortalama RMSE değeri 0.052797,
+örneklem standart sapması ise 0.000909 olarak hesaplanmıştır. En düşük sonlu
+RMSE seed 7 için 0.051160 olarak elde edilmiştir.
+
+Böylece başarılı koşular için:
+
+`0.0528 ± 0.0009`
+
+sonucu elde edilmiştir.
+
+Orijinal GAIN makalesinde Spam veri seti için `0.0513 ± 0.0016` RMSE
+raporlanmıştır. Başarılı resmi kod koşuları makalede raporlanan sayısal
+performansa yakın bir bölgede bulunmakla birlikte, 10 koşunun ikisinin NaN
+üretmesi nedeniyle bu sonuç birebir bir yeniden üretim olarak
+değerlendirilmemiştir.
+
+Bu deney, yalnızca ortalama başarımın değil, farklı rastgele başlangıçlardaki
+sayısal kararlılığın da yeniden üretilebilirlik değerlendirmesinde dikkate
+alınması gerektiğini göstermektedir.
