@@ -1,6 +1,6 @@
 # Experiment Log
 
-## Shared Experimental Setup
+## Shared Experimental Setup for E1-E9
 
 - Dataset: UCI Spambase
 - Samples: 4601
@@ -13,7 +13,7 @@
 - Random seed: 42
 - Evaluation metric: RMSE
 - RMSE is calculated only on artificially hidden cells.
-- The same missingness mask is used for all compared methods.
+- The same missingness mask is used for the local E1-E9 comparisons. Official-repository experiments E10 and later use their separately documented setup.
 - Input features are normalized before imputation.
 
 ---
@@ -251,3 +251,131 @@ result cannot be explained primarily by insufficient training iterations.
 The largest numerical change identified so far comes from reproducing the
 authors' evaluation normalization procedure rather than from increasing the
 training duration.
+
+---
+
+## E10 - Official Authors' Implementation Reproduction Attempt
+
+Official repository commit:
+
+`ed53e6d0be14a8d4ce35eff46449d4047bcb483e`
+
+Environment:
+
+- Python: 3.10
+- TensorFlow CPU: 2.15.1
+- NumPy: 1.26.4
+
+Official parameters:
+
+- Dataset: authors' bundled Spam dataset
+- Missing rate: 20%
+- Batch size: 128
+- Hint rate: 0.9
+- Alpha: 100
+- Iterations: 10000
+
+### E10
+
+- RMSE: NaN
+- Runtime: 19.53 s
+
+### E10b
+
+Exact unmodified rerun:
+
+- RMSE: NaN
+- Runtime: 18.01 s
+
+### Dataset Integrity Check
+
+The official `data/spam.csv` file was inspected directly:
+
+- Shape: 4601 x 57
+- NaN values: 0
+- Infinite values: 0
+- All values finite: yes
+- Minimum: 0.0
+- Maximum: 15841.0
+
+Therefore, the NaN result is not caused by invalid values in the input dataset.
+
+### Iteration Diagnostic Sweep
+
+The unmodified official implementation was also executed at shorter training
+lengths:
+
+| Iterations | RMSE |
+|---:|---:|
+| 10 | 0.3861 |
+| 100 | 0.0598 |
+| 500 | 0.0549 |
+| 1000 | 0.0529 |
+| 2000 | 0.0535 |
+| 5000 | 0.0524 |
+| 10000 | NaN |
+| 10000 rerun | NaN |
+
+### Interpretation
+
+The official implementation is capable of producing finite and competitive
+RMSE values in the tested modern TensorFlow compatibility environment.
+
+The two independent 10000-iteration runs both produced NaN, while runs up to
+5000 iterations remained finite.
+
+However, the official implementation does not fix NumPy or TensorFlow random
+seeds. Therefore, the iteration sweep is confounded by changes in missingness
+mask, initialization, minibatch order, and random noise.
+
+A seeded diagnostic is required before concluding that training length itself
+causes the numerical instability.
+
+---
+
+## E11 - Seeded Official Implementation Iteration Sweep
+
+Official repository commit:
+
+`ed53e6d0be14a8d4ce35eff46449d4047bcb483e`
+
+Environment:
+
+- Python 3.10
+- TensorFlow CPU 2.15.1
+- NumPy 1.26.4
+- Seed: 42
+- oneDNN disabled for the seeded diagnostic runs
+
+Official parameters:
+
+- Dataset: authors' bundled Spam dataset
+- Missing rate: 20%
+- Batch size: 128
+- Hint rate: 0.9
+- Alpha: 100
+
+Results:
+
+| Iterations | RMSE |
+|---:|---:|
+| 1000 | 0.0564 |
+| 2000 | 0.0548 |
+| 5000 | 0.0541 |
+| 10000 | 0.0533 |
+
+### Interpretation
+
+With the random seed fixed, the official implementation remained finite at
+10000 iterations and RMSE improved as training duration increased.
+
+Therefore, the two earlier unseeded 10000-iteration NaN runs cannot be
+attributed to iteration count alone.
+
+The evidence indicates run-to-run stochastic sensitivity in some unseeded
+runs of the official implementation under the tested modern TensorFlow
+compatibility environment. The exact numerical cause of the NaN outcomes
+has not yet been isolated.
+
+This experiment also demonstrates why uncontrolled random seeds make direct
+iteration-count comparisons unreliable.

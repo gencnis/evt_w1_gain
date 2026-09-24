@@ -61,16 +61,18 @@ loss computation.
 Therefore, reproducing the exact numerical result reported in the paper should
 not be treated as equivalent to merely implementing Algorithm 1 literally.
 
-## Next Experiment
+## Follow-up Experiments
 
-E7 will implement a second GAIN variant that follows the authors' released
-code more closely.
+The planned implementation comparison was completed.
 
-The existing E5/E6 implementation will be preserved as the paper-oriented
-variant.
+- E7 tested the official-code-oriented hint and loss formulation.
+- E8 isolated the effect of the authors' RMSE evaluation procedure.
+- E9 tested the official-code-oriented variant at 10000 iterations.
+- E10 directly executed the authors' released TensorFlow implementation.
+- E11 repeated the official implementation with fixed random seeds to examine
+  run-to-run reproducibility and iteration effects.
 
-The two variants will be compared under the same Spambase data and missingness
-mask before any further hyperparameter tuning is attempted.
+These experiments are documented in `experiment_log.md`.
 
 ## Evaluation Protocol Audit
 

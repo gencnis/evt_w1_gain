@@ -61,3 +61,43 @@ Bu değişim sınırlıdır. Dolayısıyla mevcut deneyde orijinal makaledeki Sp
 sonucuyla kalan farkın temel nedeninin eğitim iterasyonu olmadığı
 değerlendirilmektedir. Buna karşılık değerlendirme ve normalizasyon
 protokolünün RMSE üzerinde daha belirgin bir etkisi olduğu görülmüştür.
+
+### Resmi Kodun Yeniden Üretilebilirlik Testi
+
+Yazarların resmi GitHub implementasyonu ayrıca izole bir ortamda doğrudan
+çalıştırılmıştır. Kullanılan depo sürümü
+`ed53e6d0be14a8d4ce35eff46449d4047bcb483e` commit'idir.
+
+Python 3.10, TensorFlow CPU 2.15.1 ve NumPy 1.26.4 ortamında resmi Spam veri
+seti ve önerilen hiperparametrelerle yapılan iki ayrı 10.000 iterasyonluk
+çalıştırmada RMSE değeri NaN olarak oluşmuştur.
+
+Buna karşılık daha kısa tanısal çalıştırmalarda 500 iterasyonda 0.0549,
+1.000 iterasyonda 0.0529 ve 5.000 iterasyonda 0.0524 gibi sonlu RMSE değerleri
+elde edilmiştir.
+
+Resmi kod rastgele tohumları sabitlemediği için bu sonuçlar eğitim iterasyonu
+açısından doğrudan karşılaştırılabilir değildir. Her çalıştırmada eksiklik
+maskesi, ağ başlangıç değerleri, mini-batch sırası ve gürültü örnekleri
+değişmektedir. Bu nedenle 10.000 iterasyondaki NaN davranışını eğitim
+süresinden ayırabilmek amacıyla rastgele tohumların sabitlendiği ek bir
+yeniden üretilebilirlik testi gerçekleştirilmiştir.
+
+### Rastgele Tohumun Yeniden Üretilebilirliğe Etkisi
+
+Resmi implementasyondaki iki bağımsız 10.000 iterasyonluk çalıştırmanın NaN
+üretmesi üzerine rastgelelik kaynakları sabitlenerek ek bir deney yapılmıştır.
+
+Seed=42 altında 1.000, 2.000, 5.000 ve 10.000 iterasyon için sırasıyla 0.0564,
+0.0548, 0.0541 ve 0.0533 RMSE elde edilmiştir. Böylece 10.000 iterasyonun
+kendi başına sayısal bozulmaya yol açmadığı görülmüştür.
+
+Bu bulgu, seed sabitlenmeyen resmi implementasyonda sonuçların koşudan koşuya
+değişebildiğini ve iterasyon sayısı gibi değişkenlerin etkisini inceleyebilmek
+için rastgelelik kaynaklarının kontrol edilmesi gerektiğini göstermektedir.
+
+Orijinal GAIN makalesinde Spam veri seti için 0.0513 ± 0.0016 RMSE
+raporlanmıştır. Seed=42 ile resmi implementasyonda 10.000 iterasyonda elde
+edilen 0.0533 RMSE bu değerden daha yüksek olmakla birlikte, tek bir seed
+sonucu olduğundan makaledeki çoklu deney ortalamasıyla doğrudan eşdeğer
+olarak yorumlanmamıştır.
