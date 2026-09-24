@@ -1,0 +1,7 @@
+experiment,method,iterations,configuration,rmse,runtime_seconds,seed,evaluation_seed,status
+E1,KNN,,"k=5",0.057377,2.21,42,,baseline
+E2,MICE-style,,"max_iter=10",0.056717,6.40,42,,baseline
+E3,GAIN,2000,"batch=128; hint_rate=0.90; alpha=100; lr=0.001",0.058260,4.92,42,,initial
+E4,GAIN,10000,"batch=128; hint_rate=0.90; alpha=100; lr=0.001",0.058377,23.64,42,,initial
+E5,GAIN,2000,"batch=128; hint_rate=0.90; alpha=100; lr=0.001",0.058253,4.81,42,2026,controlled
+E6,GAIN,10000,"batch=128; hint_rate=0.90; alpha=100; lr=0.001",0.058372,21.34,42,2026,controlled

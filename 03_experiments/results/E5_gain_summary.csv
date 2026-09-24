@@ -1,0 +1,2 @@
+experiment,iterations,training_seed,evaluation_seed,batch_size,hint_rate,alpha,learning_rate,rmse,training_time_seconds,device
+E5,2000,42,2026,128,0.9,100.0,0.001,0.058253434,4.810679330956191,cuda
