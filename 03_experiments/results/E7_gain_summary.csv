@@ -1,0 +1,2 @@
+experiment,variant,iterations,training_seed,evaluation_seed,batch_size,hint_rate,alpha,learning_rate,rmse,training_time_seconds,device
+E7,official-code-oriented,2000,42,2026,128,0.9,100.0,0.001,0.058246695,3.7201334300334565,cuda

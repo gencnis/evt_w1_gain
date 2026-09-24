@@ -140,3 +140,114 @@ Increasing training from 2000 to 10000 iterations substantially reduced reconstr
 The first 2000 iterations reproduce the E5 loss trajectory, confirming deterministic training under the current setup.
 
 The RMSE difference is small and comes from a single training seed, so it is not yet interpreted as evidence that 10000 iterations are generally worse.
+
+---
+
+## E7 - Official-Code-Oriented Hint and Loss
+
+- Script: `src/06_gain_official_hint_loss.py`
+- Purpose: Test the practical effect of the discrepancy between the paper formulation and the authors' released implementation.
+- Dataset and missingness mask: Same as E5
+- Training seed: 42
+- Evaluation seed: 2026
+- Iterations: 2000
+- Batch size: 128
+- Hint rate: 0.90
+- Alpha: 100
+- Learning rate: 0.001
+- Device: CUDA
+- RMSE: 0.058247
+- Training time: 3.72 s
+- Final reconstruction loss: 0.001853
+
+### Difference from E5
+
+E5 follows the paper-oriented hint/loss formulation more closely.
+
+E7 changes the following components to match the authors' released code more closely:
+
+- Hint is computed as `H = M * H_temp`.
+- No 0.5-valued uncertain hint entries are used.
+- Discriminator classification loss is averaged over all components.
+- Generator adversarial loss is applied to missing components and averaged over the full matrix.
+
+All other intended experimental variables are held constant.
+
+### Observation
+
+E5 RMSE: 0.058253
+
+E7 RMSE: 0.058247
+
+The RMSE difference is negligible under the current MCAR setting and fixed seed.
+
+Therefore, although the paper and official code differ in their hint and loss implementation, this discrepancy does not explain the gap between the current implementation and the RMSE reported in the original GAIN paper.
+
+Training loss values between E5 and E7 should not be directly compared because their loss definitions and averaging procedures differ.
+
+---
+
+## E8 - Official Evaluation Audit
+
+- Script: `src/07_gain_official_evaluation.py`
+- Variant: Official-code-oriented GAIN
+- Training seed: 42
+- Evaluation seed: 2026
+- Iterations: 2000
+- Same training configuration as E7
+- Current normalized-space RMSE: 0.058247
+- Author-code-style RMSE: 0.054750
+- Training time: 4.89 s
+
+### Purpose
+
+E8 isolates the effect of the RMSE evaluation procedure.
+
+The trained model and deterministic imputation procedure are unchanged relative
+to E7. The same imputed values are evaluated using two different normalization
+and RMSE procedures.
+
+### Observation
+
+The current experiment evaluation gives an RMSE of 0.058247.
+
+When the same imputed values are evaluated using the normalization and RMSE
+logic from the authors' released GAIN utility code, the RMSE becomes 0.054750.
+
+Therefore, evaluation and normalization details have a substantial effect on
+the numerical RMSE reported for this experiment.
+
+This improvement must not be interpreted as an improvement in the trained
+model because the underlying imputations are unchanged.
+
+The remaining difference from the RMSE reported in the original paper must be
+investigated separately.
+
+---
+
+## E9 - Official-Code-Oriented 10000 Iterations
+
+- Script: `src/07_gain_official_evaluation.py`
+- Variant: Official-code-oriented GAIN
+- Training seed: 42
+- Evaluation seed: 2026
+- Iterations: 10000
+- Same configuration as E8 except for iteration count
+- Current normalized-space RMSE: 0.058006
+- Author-code-style RMSE: 0.054585
+- Training time: 23.01 s
+- Final reconstruction loss: 0.000185
+
+### Observation
+
+Increasing training from 2000 to 10000 iterations produced only a small
+improvement in imputation RMSE.
+
+Author-code-style RMSE changed from 0.054750 in E8 to 0.054585 in E9.
+
+Therefore, the remaining difference from the original paper's reported Spam
+result cannot be explained primarily by insufficient training iterations.
+
+The largest numerical change identified so far comes from reproducing the
+authors' evaluation normalization procedure rather than from increasing the
+training duration.

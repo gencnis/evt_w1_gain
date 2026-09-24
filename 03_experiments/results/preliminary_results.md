@@ -56,3 +56,33 @@ The RMSE difference between E5 and E6 is small and is based on a single training
 E5 and E6 also reproduce identical training losses during their first 2000 iterations, providing a useful reproducibility check.
 
 These experiments are preliminary and are not yet the final multi-seed benchmark.
+
+## Paper-Oriented vs Official-Code-Oriented GAIN
+
+| Experiment | Variant | Iterations | RMSE | Runtime |
+|---|---|---:|---:|---:|
+| E5 | Paper-oriented hint/loss | 2000 | 0.058253 | 4.81 s |
+| E7 | Official-code-oriented hint/loss | 2000 | 0.058247 | 3.72 s |
+
+The two variants produced effectively identical imputation RMSE under the current MCAR experiment.
+
+Therefore, the paper-code discrepancy in the hint and loss formulation does not appear to explain the difference between the current results and the RMSE reported in the original paper.
+
+The training loss values of the two variants should not be compared directly because the underlying loss definitions and reduction procedures differ.
+
+## Evaluation Protocol Audit
+
+| Experiment | Variant | Iterations | Current RMSE | Author-code RMSE | Runtime |
+|---|---|---:|---:|---:|---:|
+| E8 | Official-code-oriented | 2000 | 0.058247 | 0.054750 | 4.89 s |
+| E9 | Official-code-oriented | 10000 | 0.058006 | 0.054585 | 23.01 s |
+
+The same model outputs produce substantially different numerical RMSE values
+depending on the normalization and evaluation procedure.
+
+The author-code-style evaluation reduces the reported RMSE from approximately
+0.058 to approximately 0.055 without changing the underlying imputations.
+
+Increasing training from 2000 to 10000 iterations produces only a small
+additional improvement. Therefore, evaluation protocol has had a much larger
+numerical effect than training duration in the experiments performed so far.

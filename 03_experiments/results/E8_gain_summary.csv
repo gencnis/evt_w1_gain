@@ -1,0 +1,2 @@
+experiment,variant,iterations,training_seed,evaluation_seed,batch_size,hint_rate,alpha,learning_rate,current_rmse,author_code_rmse,training_time_seconds,device
+E8,official-code-oriented-evaluation-audit,2000,42,2026,128,0.9,100.0,0.001,0.058246695,0.05474970871140051,4.891327110002749,cuda

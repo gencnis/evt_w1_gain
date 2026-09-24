@@ -1,0 +1,2 @@
+experiment,variant,iterations,current_rmse,author_code_rmse,training_seed,evaluation_seed
+E8,official-code-oriented,2000,0.058247,0.054750,42,2026

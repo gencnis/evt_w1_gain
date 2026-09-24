@@ -71,3 +71,33 @@ variant.
 
 The two variants will be compared under the same Spambase data and missingness
 mask before any further hyperparameter tuning is attempted.
+
+## Evaluation Protocol Audit
+
+Experiment E8 tested whether the RMSE evaluation procedure contributes to the
+difference between the current results and the result reported in the original
+GAIN paper.
+
+The same official-code-oriented trained model produced:
+
+- Current experiment RMSE: 0.058247
+- Author-code-style RMSE: 0.054750
+
+No change was made to the learned model or its imputed values between these two
+measurements.
+
+The difference therefore originates from the evaluation normalization and RMSE
+procedure rather than from improved imputation.
+
+This finding demonstrates that reproducing a reported RMSE requires reproducing
+the evaluation procedure in addition to the model architecture and training
+procedure.
+
+## Reference Links
+
+- GAIN paper:
+  https://proceedings.mlr.press/v80/yoon18a.html
+- Authors' official implementation:
+  https://github.com/jsyoon0823/GAIN
+- Discussion of the hint-mechanism discrepancy:
+  https://github.com/jsyoon0823/GAIN/issues/2
