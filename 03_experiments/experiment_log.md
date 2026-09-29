@@ -453,3 +453,88 @@ Instead, the experiment shows that the official implementation can reproduce
 similar Spam imputation accuracy in successful runs while also exhibiting
 run failures for some seeds in the tested modern TensorFlow compatibility
 environment.
+
+---
+
+## E13 - MICE Convergence Sensitivity Check
+
+Purpose:
+
+Evaluate whether increasing the MICE-style IterativeImputer iteration limit
+from 10 to 50 resolves the convergence warnings observed in the final
+multi-seed comparison.
+
+Configuration:
+
+- Dataset: UCI Spambase
+- Seeds: 0-9
+- Missingness mechanism: MCAR
+- Missing rate: 20%
+- Same seed-based masks as the final comparison
+- Method: IterativeImputer
+- max_iter: 50
+- initial_strategy: mean
+
+### Results
+
+- Mean RMSE: 0.053365
+- Sample standard deviation: 0.003485
+- Convergence warnings: 8/10
+- Mean runtime: 69.05 s
+
+### Interpretation
+
+Increasing max_iter from 10 to 50 did not consistently resolve the convergence
+warning.
+
+Only two of ten runs converged before reaching the maximum iteration count.
+
+The higher iteration limit also increased mean RMSE, variability, and runtime
+relative to the pre-specified max_iter=10 baseline.
+
+Therefore, the final comparison retains the original MICE-style baseline with
+max_iter=10.
+
+The max_iter=50 result is retained as a sensitivity analysis rather than used
+as the final benchmark configuration.
+
+---
+
+## E14 - Final Multi-Seed KNN / MICE / GAIN Comparison
+
+### Protocol
+
+- Dataset: UCI Spambase
+- Seeds: 0-9
+- Missingness mechanism: MCAR
+- Missing rate: 20%
+- Same seed-specific missingness mask used for all three methods
+- Evaluation: author-code-style normalized RMSE
+
+Methods:
+
+- KNN: k=5
+- MICE-style IterativeImputer: max_iter=10
+- GAIN: 10000 iterations, batch size 128, hint rate 0.9, alpha 100
+
+### Final Results
+
+| Method | Mean RMSE | Std RMSE | Min RMSE | Max RMSE | Mean Runtime (s) |
+|---|---:|---:|---:|---:|---:|
+| KNN | 0.053333 | 0.000688 | 0.052437 | 0.054372 | 2.30 |
+| MICE-style | 0.051219 | 0.001292 | 0.048626 | 0.053134 | 8.66 |
+| GAIN | 0.052605 | 0.001112 | 0.050904 | 0.054280 | 20.17 |
+
+### Interpretation
+
+Under the final controlled protocol, MICE-style produced the lowest mean RMSE.
+
+GAIN produced a lower mean RMSE than KNN but required the highest mean runtime.
+
+The MICE max_iter=50 sensitivity experiment did not resolve convergence
+warnings consistently and produced worse mean RMSE, higher variability, and
+substantially higher runtime. Therefore, the pre-specified max_iter=10
+MICE-style configuration is retained in the final comparison.
+
+This experiment closes the implementation and benchmarking phase of the work.
+No further model tuning is planned for the course assignment.

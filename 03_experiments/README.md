@@ -279,3 +279,27 @@ Related files:
 - `results/official_10seed_results.csv`
 - `results/official_10seed_summary.md`
 - `../04_figures_tables/official_10seed_reproduction.png`
+
+## Final Controlled Comparison
+
+The final course-work comparison uses seeds 0-9 and the same MCAR mask for
+KNN, MICE-style, and GAIN within each seed.
+
+| Method | Mean RMSE | Std RMSE | Mean Runtime |
+|---|---:|---:|---:|
+| KNN | 0.053333 | 0.000688 | 2.30 s |
+| MICE-style | 0.051219 | 0.001292 | 8.66 s |
+| GAIN | 0.052605 | 0.001112 | 20.17 s |
+
+Final artifacts:
+
+- `results/final_multiseed_results.csv`
+- `results/final_multiseed_summary.csv`
+- `results/final_multiseed_summary.md`
+- `results/final_comparison.csv`
+- `results/final_comparison.md`
+- `results/mice_convergence_check.csv`
+- `../04_figures_tables/final_rmse_comparison.png`
+- `../04_figures_tables/final_runtime_comparison.png`
+
+The experimental benchmarking phase is considered complete.

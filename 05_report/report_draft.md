@@ -130,3 +130,67 @@ değerlendirilmemiştir.
 Bu deney, yalnızca ortalama başarımın değil, farklı rastgele başlangıçlardaki
 sayısal kararlılığın da yeniden üretilebilirlik değerlendirmesinde dikkate
 alınması gerektiğini göstermektedir.
+
+### MICE Yakınsama Duyarlılık Analizi
+
+Final karşılaştırmada kullanılan MICE-style IterativeImputer, `max_iter=10`
+ayarında tüm seed'lerde early-stopping yakınsama uyarısı üretmiştir. Bu nedenle
+sonucun iterasyon sınırına duyarlı olup olmadığını değerlendirmek amacıyla aynı
+10 maske üzerinde `max_iter=50` ile ek bir duyarlılık deneyi yapılmıştır.
+
+Bu deneyde ortalama RMSE 0.053365, standart sapma 0.003485 ve ortalama çalışma
+süresi 69.05 saniye olarak ölçülmüştür. On koşunun sekizinde yakınsama uyarısı
+devam etmiştir.
+
+Dolayısıyla iterasyon sınırının 10'dan 50'ye çıkarılması yakınsama sorununu
+tutarlı biçimde çözmemiş, buna karşılık hata değişkenliğini ve hesaplama
+maliyetini artırmıştır. Bu nedenle final karşılaştırmada baştan belirlenen
+`max_iter=10` MICE-style baseline korunmuş, 50 iterasyonluk deney yalnızca
+duyarlılık analizi olarak raporlanmıştır.
+EOFcat >> 05_report/report_draft.md <<'EOF'
+
+### MICE Yakınsama Duyarlılık Analizi
+
+Final karşılaştırmada kullanılan MICE-style IterativeImputer, `max_iter=10`
+ayarında tüm seed'lerde early-stopping yakınsama uyarısı üretmiştir. Bu nedenle
+sonucun iterasyon sınırına duyarlı olup olmadığını değerlendirmek amacıyla aynı
+10 maske üzerinde `max_iter=50` ile ek bir duyarlılık deneyi yapılmıştır.
+
+Bu deneyde ortalama RMSE 0.053365, standart sapma 0.003485 ve ortalama çalışma
+süresi 69.05 saniye olarak ölçülmüştür. On koşunun sekizinde yakınsama uyarısı
+devam etmiştir.
+
+Dolayısıyla iterasyon sınırının 10'dan 50'ye çıkarılması yakınsama sorununu
+tutarlı biçimde çözmemiş, buna karşılık hata değişkenliğini ve hesaplama
+maliyetini artırmıştır. Bu nedenle final karşılaştırmada baştan belirlenen
+`max_iter=10` MICE-style baseline korunmuş, 50 iterasyonluk deney yalnızca
+duyarlılık analizi olarak raporlanmıştır.
+
+### Final KNN, MICE ve GAIN Karşılaştırması
+
+Ana uygulama deneyinde UCI Spambase veri seti üzerinde 0-9 arasındaki 10 farklı
+rastgele tohum kullanılmıştır. Her seed için verinin yaklaşık %20'si MCAR
+mekanizmasıyla yapay olarak eksik hale getirilmiş ve aynı eksiklik maskesi KNN,
+MICE-style IterativeImputer ve GAIN yöntemlerine uygulanmıştır. Böylece her üç
+yöntem aynı gizlenmiş hücreler üzerinde değerlendirilmiştir.
+
+| Yöntem | Ortalama RMSE | Standart Sapma | Min. RMSE | Maks. RMSE | Ortalama Süre |
+|---|---:|---:|---:|---:|---:|
+| KNN | 0.053333 | 0.000688 | 0.052437 | 0.054372 | 2.30 s |
+| MICE-style | 0.051219 | 0.001292 | 0.048626 | 0.053134 | 8.66 s |
+| GAIN | 0.052605 | 0.001112 | 0.050904 | 0.054280 | 20.17 s |
+
+Bu deney düzeninde en düşük ortalama RMSE MICE-style yönteminde elde edilmiştir.
+GAIN'in ortalama RMSE değeri KNN'den daha düşük olmakla birlikte GAIN üç yöntem
+arasında en yüksek hesaplama süresine sahiptir.
+
+MICE-style yöntemi max_iter=10 ayarında yakınsama uyarısı verdiğinden aynı 10
+maske üzerinde max_iter=50 ile ek bir duyarlılık analizi yapılmıştır. Bu
+deneyde ortalama RMSE 0.053365, standart sapma 0.003485 ve ortalama çalışma
+süresi 69.05 saniye olarak ölçülmüş; 10 koşunun 8'inde yakınsama uyarısı devam
+etmiştir. Bu nedenle final karşılaştırmada baştan belirlenen max_iter=10
+baseline'ı korunmuştur.
+
+Sonuçlar, tek bir veri seti, MCAR eksiklik mekanizması ve seçilen
+hiperparametrelerle sınırlıdır. Bu nedenle yöntemlerden birinin genel olarak
+diğerlerinden üstün olduğu sonucuna varılmamaktadır.
